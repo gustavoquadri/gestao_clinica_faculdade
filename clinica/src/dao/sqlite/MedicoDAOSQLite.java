@@ -33,17 +33,7 @@ public class MedicoDAOSQLite implements MedicoDAO {
     @Override
     public List<Medico> listarTodos(){
         List<Medico> lista = new ArrayList<>();
-        String sql = """
-            SELECT
-                m.id AS medico_id,
-                m.nome AS medico_nome,
-                m.crm,
-                e.id AS especialidade_id,
-                e.nome AS especialidade_nome
-            FROM medico m
-            INNER JOIN especialidade e ON m.especialidade_id = e.id
-            ORDER BY m.id
-            """;
+        String sql = "SELECT m.id AS medico_id, m.nome AS medico_nome, m.crm, e.id AS especialidade_id, e.nome AS especialidade_nome FROM medico m INNER JOIN especialidade e ON m.especialidade_id = e.id ORDER BY m.id";
 
         try(
             Connection conn = SQLiteConnection.getConnection();
@@ -69,18 +59,39 @@ public class MedicoDAOSQLite implements MedicoDAO {
     }
 
     @Override
+    public void atualizar(Medico medico){
+        String sql = "UPDATE medico SET nome = ?, crm = ?, especialidade_id = ? WHERE id = ?";
+        try(
+            Connection conn = SQLiteConnection.getConnection();
+            PreparedStatement stmt = conn.prepareStatement(sql)
+        ){
+            stmt.setString(1, medico.getNome());
+            stmt.setString(2, medico.getCrm());
+            stmt.setInt(3, medico.getEspecialidade().getId());
+            stmt.setInt(4, medico.getId());
+            stmt.executeUpdate();
+        } catch(SQLException e){
+            System.out.println("Erro ao atualizar médico: " + e.getMessage());
+        }
+    }
+
+    @Override
+    public void remover(int id){
+        String sql = "DELETE FROM medico WHERE id = ?";
+        try(
+            Connection conn = SQLiteConnection.getConnection();
+            PreparedStatement stmt = conn.prepareStatement(sql)
+        ){
+            stmt.setInt(1, id);
+            stmt.executeUpdate();
+        } catch(SQLException e){
+            System.out.println("Erro ao remover médico: " + e.getMessage());
+        }
+    }
+
+    @Override
     public Medico buscarPorId(int id){
-        String sql = """
-            SELECT
-                m.id AS medico_id,
-                m.nome AS medico_nome,
-                m.crm,
-                e.id AS especialidade_id,
-                e.nome AS especialidade_nome
-            FROM medico m
-            INNER JOIN especialidade e ON m.especialidade_id = e.id
-            WHERE m.id = ?
-        """;
+       String sql = "SELECT m.id AS medico_id, m.nome AS medico_nome, m.crm, e.id AS especialidade_id, e.nome AS especialidade_nome FROM medico m INNER JOIN especialidade e ON m.especialidade_id = e.id WHERE m.id = ?";
         try(
             Connection conn = SQLiteConnection.getConnection();
             PreparedStatement stmt = conn.prepareStatement(sql)

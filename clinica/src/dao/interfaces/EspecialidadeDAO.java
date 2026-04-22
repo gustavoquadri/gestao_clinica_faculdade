@@ -6,6 +6,8 @@ import java.util.List;
 
 public interface EspecialidadeDAO {
     void inserir(Especialidade especialidade);
-    List<Especialidade> listarTodos();
+    void atualizar(Especialidade especialidade);
+    void remover(int id);
     Especialidade buscarPorId(int id);
+    List<Especialidade> listarTodos();
 }

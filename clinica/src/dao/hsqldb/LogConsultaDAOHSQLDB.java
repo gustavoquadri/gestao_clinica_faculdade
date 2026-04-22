@@ -11,11 +11,7 @@ public class LogConsultaDAOHSQLDB implements LogConsultaDAO {
 
     @Override
     public void inserir(LogConsulta logConsulta){
-        String sql = """
-            INSERT INTO log_consulta
-            (consulta_id, medico_nome, paciente_nome, especialidade_nome, data_consulta, hora_consulta)
-            VALUES (?, ?, ?, ?, ?, ?)
-        """;
+        String sql = "INSERT INTO log_consulta (consulta_id, medico_nome, paciente_nome, especialidade_nome, data_consulta, hora_consulta) VALUES (?, ?, ?, ?, ?, ?)";
         try(
             Connection conn = HSQLDBConnection.getConnection();
             PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)
@@ -39,18 +35,7 @@ public class LogConsultaDAOHSQLDB implements LogConsultaDAO {
     @Override
     public List<LogConsulta> listarTodos(){
         List<LogConsulta> lista = new ArrayList<>();
-        String sql = """
-            SELECT
-                id,
-                consulta_id,
-                medico_nome,
-                paciente_nome,
-                especialidade_nome,
-                data_consulta,
-                hora_consulta
-            FROM log_consulta
-            ORDER BY id
-        """;
+        String sql = "SELECT id, consulta_id, medico_nome, paciente_nome, especialidade_nome, data_consulta, hora_consulta FROM log_consulta ORDER BY id";
         try(
             Connection conn = HSQLDBConnection.getConnection();
             PreparedStatement stmt = conn.prepareStatement(sql);

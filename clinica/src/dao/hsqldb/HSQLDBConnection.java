@@ -10,6 +10,14 @@ public class HSQLDBConnection{
     private static final String USER = "sa";
     private static final String PASSWORD = "";
 
+    static {
+        try {
+            Class.forName("org.hsqldb.jdbc.JDBCDriver");
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException("Driver HSQLDB nao encontrado no classpath", e);
+        }
+    }
+
     public static Connection getConnection() throws SQLException {
         return DriverManager.getConnection(URL, USER, PASSWORD);
     }

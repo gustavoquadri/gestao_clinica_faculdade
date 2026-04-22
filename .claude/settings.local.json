@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(unzip -l lib/sqlite.jar)",
+      "Bash(javac -d bin -cp \"lib/*\" -sourcepath src src/app/Main.java src/controller/*.java)",
+      "Bash(rm -rf bin)",
+      "Bash(javac -d bin -cp \"lib/*\" -sourcepath src src/app/Main.java src/ui/console/ConsoleApp.java src/ui/swing/SwingApp.java)"
+    ]
+  }
+}

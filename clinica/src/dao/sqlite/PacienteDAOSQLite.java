@@ -53,6 +53,37 @@ public class PacienteDAOSQLite implements PacienteDAO {
     }
 
     @Override
+    public void atualizar(Paciente paciente){
+        String sql = "UPDATE paciente SET nome = ?, cpf = ?, data_nascimento = ? WHERE id = ?";
+        try(
+            Connection conn = SQLiteConnection.getConnection();
+            PreparedStatement stmt = conn.prepareStatement(sql)
+        ){
+            stmt.setString(1, paciente.getNome());
+            stmt.setString(2, paciente.getCpf());
+            stmt.setString(3, paciente.getDatNasc());
+            stmt.setInt(4, paciente.getId());
+            stmt.executeUpdate();
+        } catch(SQLException e){
+            System.out.println("Erro ao atualizar paciente: " + e.getMessage());
+        }
+    }
+
+    @Override
+    public void remover(int id){
+        String sql = "DELETE FROM paciente WHERE id = ?";
+        try(
+            Connection conn = SQLiteConnection.getConnection();
+            PreparedStatement stmt = conn.prepareStatement(sql)
+        ){
+            stmt.setInt(1, id);
+            stmt.executeUpdate();
+        } catch(SQLException e){
+            System.out.println("Erro ao remover paciente: " + e.getMessage());
+        }
+    }
+
+    @Override
     public Paciente buscarPorId(int id){
         String sql = "SELECT id, nome, cpf, data_nascimento FROM paciente WHERE id = ?";
         try(

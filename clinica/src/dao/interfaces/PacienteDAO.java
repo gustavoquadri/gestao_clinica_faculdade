@@ -6,6 +6,8 @@ import java.util.List;
 
 public interface PacienteDAO {
     void inserir(Paciente paciente);
-    List<Paciente> listarTodos();
+    void atualizar(Paciente paciente);
+    void remover(int id);
     Paciente buscarPorId(int id);
+    List<Paciente> listarTodos();
 }

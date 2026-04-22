@@ -49,6 +49,35 @@ public class EspecialidadeDAOSQLite implements EspecialidadeDAO {
     }
 
     @Override
+    public void atualizar(Especialidade especialidade){
+        String sql = "UPDATE especialidade SET nome = ? WHERE id = ?";
+        try(
+            Connection conn = SQLiteConnection.getConnection();
+            PreparedStatement stmt = conn.prepareStatement(sql)
+        ){
+            stmt.setString(1, especialidade.getNome());
+            stmt.setInt(2, especialidade.getId());
+            stmt.executeUpdate();
+        } catch(SQLException e){
+            System.out.println("Erro ao atualizar especialidade: " + e.getMessage());
+        }
+    }
+
+    @Override
+    public void remover(int id){
+        String sql = "DELETE FROM especialidade WHERE id = ?";
+        try(
+            Connection conn = SQLiteConnection.getConnection();
+            PreparedStatement stmt = conn.prepareStatement(sql)
+        ){
+            stmt.setInt(1, id);
+            stmt.executeUpdate();
+        } catch(SQLException e){
+            System.out.println("Erro ao remover especialidade: " + e.getMessage());
+        }
+    }
+
+    @Override
     public Especialidade buscarPorId(int id){
         String sql = "SELECT id, nome FROM especialidade WHERE id = ?";
         try(
